@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.breakstreak.ui.home.HomeScreen
 import com.example.breakstreak.ui.login.LoginScreen
 import com.example.breakstreak.ui.register.RegisterScreen
 
@@ -17,13 +18,16 @@ sealed class Screen(val route: String) {
 fun NavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.Register.route) {
         composable(Screen.Login.route) {
-            LoginScreen(onNavigateToRegister = { navController.navigate(Screen.Register.route) })
+            LoginScreen(onLoginSuccess = { navController.navigate(Screen.Home.route) })
         }
         composable(Screen.Register.route) {
-            RegisterScreen(onRegisterSuccess = { navController.navigate(Screen.Login.route) })
+            RegisterScreen(
+                onRegisterSuccess = { navController.navigate(Screen.Login.route) },
+                onNavigateToLogin = { navController.navigate(Screen.Login.route) }
+            )
         }
         composable(Screen.Home.route) {
-//            HomeScreen()
+            HomeScreen()
         }
     }
 }

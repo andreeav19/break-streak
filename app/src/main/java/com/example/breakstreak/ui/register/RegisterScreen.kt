@@ -1,6 +1,7 @@
 package com.example.breakstreak.ui.register
 
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,7 +26,8 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun RegisterScreen(
-    onRegisterSuccess: () -> Unit = {}
+    onRegisterSuccess: () -> Unit = {},
+    onNavigateToLogin: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val auth = FirebaseAuth.getInstance()
@@ -92,5 +94,16 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = it, color = Color.Red, fontSize = 14.sp)
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "Already have an account? Login",
+            color = Color.Blue,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+                .clickable { onNavigateToLogin() }
+        )
     }
 }

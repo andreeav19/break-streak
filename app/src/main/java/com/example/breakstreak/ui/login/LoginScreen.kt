@@ -1,6 +1,9 @@
 package com.example.breakstreak.ui.login
 
-class LoginScreen (
+import androidx.compose.runtime.Composable
+
+@Composable
+fun LoginScreen(
     onNavigateToRegister: () -> Unit = {}
 ) {
 }

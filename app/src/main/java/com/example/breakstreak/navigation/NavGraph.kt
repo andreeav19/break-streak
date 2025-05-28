@@ -14,8 +14,8 @@ sealed class Screen(val route: String) {
 }
 
 @Composable
-fun AppNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Screen.Login.route) {
+fun NavGraph(navController: NavHostController) {
+    NavHost(navController = navController, startDestination = Screen.Register.route) {
         composable(Screen.Login.route) {
             LoginScreen(onNavigateToRegister = { navController.navigate(Screen.Register.route) })
         }

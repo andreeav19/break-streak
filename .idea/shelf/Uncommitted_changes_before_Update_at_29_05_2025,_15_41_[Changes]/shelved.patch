@@ -1,0 +1,49 @@
+Index: app/src/main/java/com/example/breakstreak/ui/register/RegisterScreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.breakstreak.ui.register\n\nimport android.widget.Toast\nimport androidx.compose.foundation.clickable\nimport androidx.compose.foundation.layout.Arrangement\nimport androidx.compose.foundation.layout.Column\nimport androidx.compose.foundation.layout.Spacer\nimport androidx.compose.foundation.layout.fillMaxSize\nimport androidx.compose.foundation.layout.fillMaxWidth\nimport androidx.compose.foundation.layout.height\nimport androidx.compose.foundation.layout.padding\nimport androidx.compose.material3.Button\nimport androidx.compose.material3.LinearProgressIndicator\nimport androidx.compose.material3.OutlinedTextField\nimport androidx.compose.material3.Text\nimport androidx.compose.runtime.Composable\nimport androidx.compose.ui.platform.LocalContext\nimport com.google.firebase.auth.FirebaseAuth\nimport androidx.compose.runtime.*\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.graphics.Color\nimport androidx.compose.ui.text.font.FontWeight\nimport androidx.compose.ui.text.input.PasswordVisualTransformation\nimport androidx.compose.ui.unit.dp\nimport androidx.compose.ui.unit.sp\nimport com.google.firebase.firestore.FirebaseFirestore\n\n@Composable\nfun RegisterScreen(\n    onRegisterSuccess: () -> Unit = {},\n    onNavigateToLogin: () -> Unit = {}\n) {\n    val context = LocalContext.current\n    val auth = FirebaseAuth.getInstance()\n    val db = FirebaseFirestore.getInstance()\n\n    var firstName by remember { mutableStateOf(\"\") }\n    var lastName by remember { mutableStateOf(\"\") }\n    var email by remember { mutableStateOf(\"\") }\n    var password by remember { mutableStateOf(\"\") }\n    var isLoading by remember { mutableStateOf(false) }\n    var errorMessage by remember { mutableStateOf<String?>(null) }\n\n    Column (\n        modifier = Modifier\n            .fillMaxSize()\n            .padding(16.dp),\n        verticalArrangement = Arrangement.Center\n    ) {\n        Text(\"Register\", fontSize = 24.sp, fontWeight = FontWeight.Bold)\n\n        Spacer(modifier = Modifier.height(16.dp))\n\n        OutlinedTextField(\n            value = firstName,\n            onValueChange = { firstName = it },\n            label = { Text(\"First name\") },\n            singleLine = true,\n            modifier = Modifier.fillMaxWidth()\n        )\n\n        OutlinedTextField(\n            value = lastName,\n            onValueChange = { lastName = it },\n            label = { Text(\"Last name\") },\n            singleLine = true,\n            modifier = Modifier.fillMaxWidth()\n        )\n\n        OutlinedTextField(\n            value = email,\n            onValueChange = { email = it },\n            label = { Text(\"Email\") },\n            singleLine = true,\n            modifier = Modifier.fillMaxWidth()\n        )\n\n        OutlinedTextField(\n            value = password,\n            onValueChange = { password = it },\n            label = { Text(\"Password\") },\n            singleLine = true,\n            visualTransformation = PasswordVisualTransformation(),\n            modifier = Modifier.fillMaxWidth()\n        )\n\n        Spacer(modifier = Modifier.height(16.dp))\n\n        Button(\n            onClick = {\n                isLoading = true\n                auth.createUserWithEmailAndPassword(email, password)\n                    .addOnCompleteListener { task ->\n                        if (task.isSuccessful) {\n                            val userId = auth.currentUser?.uid ?: return@addOnCompleteListener\n\n                            val userData = hashMapOf(\n                                \"firstName\" to firstName,\n                                \"lastName\" to lastName,\n                                \"email\" to email\n                            )\n\n                            db.collection(\"users\").document(userId)\n                                .set(userData)\n                                .addOnSuccessListener {\n                                    Toast.makeText(context, \"Cont creat și date salvate!\", Toast.LENGTH_SHORT).show()\n                                    onRegisterSuccess()\n                                }\n                                .addOnFailureListener { e ->\n                                    Toast.makeText(context, \"Eroare Firestore: ${e.message}\", Toast.LENGTH_SHORT).show()\n                                }\n                        } else {\n                            Toast.makeText(context, \"Eroare Firebase: ${task.exception?.message}\", Toast.LENGTH_SHORT).show()\n                        }\n                    }\n            },\n            modifier = Modifier.fillMaxWidth()\n        ) {\n            Text(\"Register\")\n        }\n\n        if (isLoading) {\n            Spacer(modifier = Modifier.height(16.dp))\n            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())\n        }\n\n        errorMessage?.let {\n            Spacer(modifier = Modifier.height(8.dp))\n            Text(text = it, color = Color.Red, fontSize = 14.sp)\n        }\n\n        Spacer(modifier = Modifier.height(16.dp))\n\n        Text(\n            text = \"Already have an account? Login\",\n            color = Color.Blue,\n            modifier = Modifier\n                .fillMaxWidth()\n                .padding(top = 8.dp)\n                .clickable { onNavigateToLogin() }\n        )\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/breakstreak/ui/register/RegisterScreen.kt b/app/src/main/java/com/example/breakstreak/ui/register/RegisterScreen.kt
+--- a/app/src/main/java/com/example/breakstreak/ui/register/RegisterScreen.kt	(revision cad823e7b78a903b963a44b006e0af020cd9652b)
++++ b/app/src/main/java/com/example/breakstreak/ui/register/RegisterScreen.kt	(date 1748520728280)
+@@ -19,11 +19,13 @@
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.res.stringResource
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.input.PasswordVisualTransformation
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+ import com.google.firebase.firestore.FirebaseFirestore
++import com.example.breakstreak.R
+ 
+ @Composable
+ fun RegisterScreen(
+@@ -54,7 +56,7 @@
+         OutlinedTextField(
+             value = firstName,
+             onValueChange = { firstName = it },
+-            label = { Text("First name") },
++            label = { Text(stringResource(id = R.string.first_name)) },
+             singleLine = true,
+             modifier = Modifier.fillMaxWidth()
+         )
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\n    <string name=\"app_name\">BreakStreak</string>\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+--- a/app/src/main/res/values/strings.xml	(revision cad823e7b78a903b963a44b006e0af020cd9652b)
++++ b/app/src/main/res/values/strings.xml	(date 1748520728269)
+@@ -1,3 +1,4 @@
+ <resources>
+     <string name="app_name">BreakStreak</string>
++    <string name="first_name">First name</string>
+ </resources>
+\ No newline at end of file

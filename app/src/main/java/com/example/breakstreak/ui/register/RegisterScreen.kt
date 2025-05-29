@@ -89,6 +89,16 @@ fun RegisterScreen(
         Button(
             onClick = {
                 isLoading = true
+                if (firstName.isBlank() || lastName.isBlank() ||
+                    email.isBlank() || password.isBlank()) {
+                    errorMessage = "All fields are required."
+                    isLoading = false
+                    return@Button
+                }
+
+                errorMessage = null
+                isLoading = true
+
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
@@ -108,9 +118,11 @@ fun RegisterScreen(
                                 }
                                 .addOnFailureListener { e ->
                                     Toast.makeText(context, "Eroare Firestore: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    isLoading = false
                                 }
                         } else {
                             Toast.makeText(context, "Eroare Firebase: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                            isLoading = false
                         }
                     }
             },

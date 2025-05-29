@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
 fun RegisterScreen(
@@ -31,7 +32,10 @@ fun RegisterScreen(
 ) {
     val context = LocalContext.current
     val auth = FirebaseAuth.getInstance()
+    val db = FirebaseFirestore.getInstance()
 
+    var firstName by remember { mutableStateOf("") }
+    var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
@@ -46,6 +50,22 @@ fun RegisterScreen(
         Text("Register", fontSize = 24.sp, fontWeight = FontWeight.Bold)
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = firstName,
+            onValueChange = { firstName = it },
+            label = { Text("First name") },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        OutlinedTextField(
+            value = lastName,
+            onValueChange = { lastName = it },
+            label = { Text("Last name") },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
+        )
 
         OutlinedTextField(
             value = email,
@@ -71,12 +91,25 @@ fun RegisterScreen(
                 isLoading = true
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
-                        isLoading = false
                         if (task.isSuccessful) {
-                            Toast.makeText(context, "Registered Successfully", Toast.LENGTH_SHORT).show()
-                            onRegisterSuccess()
+                            val userId = auth.currentUser?.uid ?: return@addOnCompleteListener
+
+                            val userData = hashMapOf(
+                                "firstName" to firstName,
+                                "lastName" to lastName,
+                                "email" to email
+                            )
+
+                            db.collection("users").document(userId)
+                                .set(userData)
+                                .addOnSuccessListener {
+                                    Toast.makeText(context, "Cont creat și date salvate!", Toast.LENGTH_SHORT).show()
+                                }
+                                .addOnFailureListener { e ->
+                                    Toast.makeText(context, "Eroare Firestore: ${e.message}", Toast.LENGTH_SHORT).show()
+                                }
                         } else {
-                            errorMessage = task.exception?.message
+                            Toast.makeText(context, "Eroare Firebase: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
             },

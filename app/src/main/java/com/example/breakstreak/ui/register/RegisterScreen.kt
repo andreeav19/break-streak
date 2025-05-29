@@ -104,6 +104,7 @@ fun RegisterScreen(
                                 .set(userData)
                                 .addOnSuccessListener {
                                     Toast.makeText(context, "Cont creat și date salvate!", Toast.LENGTH_SHORT).show()
+                                    onRegisterSuccess()
                                 }
                                 .addOnFailureListener { e ->
                                     Toast.makeText(context, "Eroare Firestore: ${e.message}", Toast.LENGTH_SHORT).show()

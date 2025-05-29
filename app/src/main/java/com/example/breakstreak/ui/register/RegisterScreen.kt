@@ -43,13 +43,17 @@ fun RegisterScreen(
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Register", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+        Text(
+            stringResource(id = R.string.register_title),
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -64,7 +68,7 @@ fun RegisterScreen(
         OutlinedTextField(
             value = lastName,
             onValueChange = { lastName = it },
-            label = { Text("Last name") },
+            label = { Text(stringResource(id = R.string.last_name)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -72,7 +76,7 @@ fun RegisterScreen(
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Email") },
+            label = { Text(stringResource(id = R.string.email)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -80,7 +84,7 @@ fun RegisterScreen(
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            label = { Text(stringResource(id = R.string.password)) },
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
@@ -92,8 +96,9 @@ fun RegisterScreen(
             onClick = {
                 isLoading = true
                 if (firstName.isBlank() || lastName.isBlank() ||
-                    email.isBlank() || password.isBlank()) {
-                    errorMessage = "All fields are required."
+                    email.isBlank() || password.isBlank()
+                ) {
+                    errorMessage = context.getString(R.string.error_required_fields)
                     isLoading = false
                     return@Button
                 }
@@ -115,22 +120,34 @@ fun RegisterScreen(
                             db.collection("users").document(userId)
                                 .set(userData)
                                 .addOnSuccessListener {
-                                    Toast.makeText(context, "Cont creat și date salvate!", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(R.string.register_success),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                     onRegisterSuccess()
                                 }
                                 .addOnFailureListener { e ->
-                                    Toast.makeText(context, "Eroare Firestore: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(R.string.register_firestore_error) + " ${e.message}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                     isLoading = false
                                 }
                         } else {
-                            Toast.makeText(context, "Eroare Firebase: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.register_firebase_error) + " ${task.exception?.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             isLoading = false
                         }
                     }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Register")
+            Text(stringResource(id = R.string.register_title))
         }
 
         if (isLoading) {
@@ -146,7 +163,7 @@ fun RegisterScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Already have an account? Login",
+            text = stringResource(id = R.string.go_to_login_message),
             color = Color.Blue,
             modifier = Modifier
                 .fillMaxWidth()

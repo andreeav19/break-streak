@@ -12,4 +12,5 @@
     <string name="go_to_login_message">Already have an account? Login</string>
     <string name="login_title">Login</string>
     <string name="login_success">Logged in successfully!</string>
+    <string name="go_to_register_message">Don\'t have an account? Register</string>
 </resources>

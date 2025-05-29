@@ -1,0 +1,68 @@
+Index: app/src/main/java/com/example/breakstreak/ui/login/LoginScreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.breakstreak.ui.login\r\n\r\nimport android.widget.Toast\r\nimport androidx.compose.foundation.layout.Arrangement\r\nimport androidx.compose.foundation.layout.Column\r\nimport androidx.compose.foundation.layout.Spacer\r\nimport androidx.compose.foundation.layout.fillMaxSize\r\nimport androidx.compose.foundation.layout.fillMaxWidth\r\nimport androidx.compose.foundation.layout.height\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.material3.Button\r\nimport androidx.compose.material3.LinearProgressIndicator\r\nimport androidx.compose.material3.OutlinedTextField\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.runtime.getValue\r\nimport androidx.compose.runtime.mutableStateOf\r\nimport androidx.compose.runtime.remember\r\nimport androidx.compose.runtime.setValue\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.platform.LocalContext\r\nimport androidx.compose.ui.text.font.FontWeight\r\nimport androidx.compose.ui.text.input.PasswordVisualTransformation\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport com.google.firebase.auth.FirebaseAuth\r\n\r\n@Composable\r\nfun LoginScreen(\r\n    onLoginSuccess: () -> Unit = {}\r\n) {\r\n    val context = LocalContext.current\r\n    val auth = FirebaseAuth.getInstance()\r\n\r\n    var email by remember { mutableStateOf(\"\") }\r\n    var password by remember { mutableStateOf(\"\") }\r\n    var isLoading by remember { mutableStateOf(false) }\r\n    var errorMessage by remember { mutableStateOf<String?>(null) }\r\n\r\n    Column (\r\n        modifier = Modifier\r\n            .fillMaxSize()\r\n            .padding(16.dp),\r\n        verticalArrangement = Arrangement.Center\r\n    ) {\r\n        Text(\"Login\", fontSize = 24.sp, fontWeight = FontWeight.Bold)\r\n\r\n        Spacer(modifier = Modifier.height(16.dp))\r\n\r\n        OutlinedTextField(\r\n            value = email,\r\n            onValueChange = { email = it },\r\n            label = { Text(\"Email\") },\r\n            singleLine = true,\r\n            modifier = Modifier.fillMaxWidth()\r\n        )\r\n\r\n        OutlinedTextField(\r\n            value = password,\r\n            onValueChange = { password = it },\r\n            label = { Text(\"Password\") },\r\n            singleLine = true,\r\n            visualTransformation = PasswordVisualTransformation(),\r\n            modifier = Modifier.fillMaxWidth()\r\n        )\r\n\r\n        Spacer(modifier = Modifier.height(16.dp))\r\n\r\n        Button(\r\n            onClick = {\r\n                isLoading = true\r\n                auth.signInWithEmailAndPassword(email, password)\r\n                    .addOnCompleteListener { task ->\r\n                        isLoading = false\r\n                        if (task.isSuccessful) {\r\n                            Toast.makeText(context, \"Logged in Successfully\", Toast.LENGTH_SHORT).show()\r\n                            onLoginSuccess()\r\n                        } else {\r\n                            errorMessage = task.exception?.message\r\n                        }\r\n                    }\r\n            },\r\n            modifier = Modifier.fillMaxWidth()\r\n        ) {\r\n            Text(\"Login\")\r\n        }\r\n\r\n\r\n        if (isLoading) {\r\n            Spacer(modifier = Modifier.height(16.dp))\r\n            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())\r\n        }\r\n\r\n        errorMessage?.let {\r\n            Spacer(modifier = Modifier.height(8.dp))\r\n            Text(text = it, color = Color.Red, fontSize = 14.sp)\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/breakstreak/ui/login/LoginScreen.kt b/app/src/main/java/com/example/breakstreak/ui/login/LoginScreen.kt
+--- a/app/src/main/java/com/example/breakstreak/ui/login/LoginScreen.kt	(revision 00da94d380cec42f5a56cb2ec96de8b6edea95fd)
++++ b/app/src/main/java/com/example/breakstreak/ui/login/LoginScreen.kt	(date 1748522108664)
+@@ -1,6 +1,7 @@
+ package com.example.breakstreak.ui.login
+ 
+ import android.widget.Toast
++import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.layout.Arrangement
+ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.Spacer
+@@ -28,7 +29,8 @@
+ 
+ @Composable
+ fun LoginScreen(
+-    onLoginSuccess: () -> Unit = {}
++    onLoginSuccess: () -> Unit = {},
++    onNavigateToRegister: () -> Unit = {}
+ ) {
+     val context = LocalContext.current
+     val auth = FirebaseAuth.getInstance()
+@@ -96,5 +98,16 @@
+             Spacer(modifier = Modifier.height(8.dp))
+             Text(text = it, color = Color.Red, fontSize = 14.sp)
+         }
++
++        Spacer(modifier = Modifier.height(16.dp))
++
++        Text(
++            text = "Don't have an account? Register",
++            color = Color.Blue,
++            modifier = Modifier
++                .fillMaxWidth()
++                .padding(top = 8.dp)
++                .clickable { onNavigateToRegister() }
++        )
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/example/breakstreak/navigation/NavGraph.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.breakstreak.navigation\r\n\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.navigation.NavHostController\r\nimport androidx.navigation.compose.NavHost\r\nimport androidx.navigation.compose.composable\r\nimport com.example.breakstreak.ui.home.HomeScreen\r\nimport com.example.breakstreak.ui.login.LoginScreen\r\nimport com.example.breakstreak.ui.register.RegisterScreen\r\n\r\nsealed class Screen(val route: String) {\r\n    object Login : Screen(\"login\")\r\n    object Register : Screen(\"register\")\r\n    object Home : Screen(\"home\")\r\n}\r\n\r\n@Composable\r\nfun NavGraph(navController: NavHostController) {\r\n    NavHost(navController = navController, startDestination = Screen.Register.route) {\r\n        composable(Screen.Login.route) {\r\n            LoginScreen(onLoginSuccess = { navController.navigate(Screen.Home.route) })\r\n        }\r\n        composable(Screen.Register.route) {\r\n            RegisterScreen(\r\n                onRegisterSuccess = { navController.navigate(Screen.Login.route) },\r\n                onNavigateToLogin = { navController.navigate(Screen.Login.route) }\r\n            )\r\n        }\r\n        composable(Screen.Home.route) {\r\n            HomeScreen()\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/breakstreak/navigation/NavGraph.kt b/app/src/main/java/com/example/breakstreak/navigation/NavGraph.kt
+--- a/app/src/main/java/com/example/breakstreak/navigation/NavGraph.kt	(revision 00da94d380cec42f5a56cb2ec96de8b6edea95fd)
++++ b/app/src/main/java/com/example/breakstreak/navigation/NavGraph.kt	(date 1748522108655)
+@@ -18,7 +18,10 @@
+ fun NavGraph(navController: NavHostController) {
+     NavHost(navController = navController, startDestination = Screen.Register.route) {
+         composable(Screen.Login.route) {
+-            LoginScreen(onLoginSuccess = { navController.navigate(Screen.Home.route) })
++            LoginScreen(
++                onLoginSuccess = { navController.navigate(Screen.Home.route) },
++                onNavigateToRegister = { navController.navigate(Screen.Register.route) }
++            )
+         }
+         composable(Screen.Register.route) {
+             RegisterScreen(

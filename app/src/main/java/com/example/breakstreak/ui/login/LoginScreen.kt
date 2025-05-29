@@ -1,6 +1,7 @@
 package com.example.breakstreak.ui.login
 
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -30,7 +31,8 @@ import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun LoginScreen(
-    onLoginSuccess: () -> Unit = {}
+    onLoginSuccess: () -> Unit = {},
+    onNavigateToRegister: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val auth = FirebaseAuth.getInstance()
@@ -76,6 +78,15 @@ fun LoginScreen(
         Button(
             onClick = {
                 isLoading = true
+                if (email.isBlank() || password.isBlank()) {
+                    errorMessage = context.getString(R.string.error_required_fields)
+                    isLoading = false
+                    return@Button
+                }
+
+                errorMessage = null
+                isLoading = true
+
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         isLoading = false
@@ -93,7 +104,7 @@ fun LoginScreen(
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(stringResource(id = R.string.email))
+            Text(stringResource(id = R.string.login_title))
         }
 
 
@@ -106,5 +117,16 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = it, color = Color.Red, fontSize = 14.sp)
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = stringResource(id = R.string.go_to_register_message),
+            color = Color.Blue,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+                .clickable { onNavigateToRegister() }
+        )
     }
 }

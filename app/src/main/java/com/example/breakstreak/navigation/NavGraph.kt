@@ -18,7 +18,10 @@ sealed class Screen(val route: String) {
 fun NavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.Register.route) {
         composable(Screen.Login.route) {
-            LoginScreen(onLoginSuccess = { navController.navigate(Screen.Home.route) })
+            LoginScreen(
+                onLoginSuccess = { navController.navigate(Screen.Home.route) },
+                onNavigateToRegister = { navController.navigate(Screen.Register.route) }
+            )
         }
         composable(Screen.Register.route) {
             RegisterScreen(

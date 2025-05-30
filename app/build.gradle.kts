@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
     id("com.google.gms.google-services")
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -64,5 +65,18 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-firestore")    
+    implementation("com.google.firebase:firebase-firestore")
+
+    // Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+
+    // Kotlin coroutines + Room
+    implementation("androidx.room:room-ktx:2.6.1")
+
+    // Optional: Paging support
+    implementation("androidx.room:room-paging:2.6.1")
+
+    // Hilt + Room
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 }

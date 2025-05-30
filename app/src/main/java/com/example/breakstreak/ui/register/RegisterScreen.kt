@@ -1,5 +1,6 @@
 package com.example.breakstreak.ui.register
 
+import UserViewModel
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,8 +25,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.breakstreak.R
+import com.example.breakstreak.data.model.LocalUser
 
 @Composable
 fun RegisterScreen(
@@ -35,6 +38,7 @@ fun RegisterScreen(
     val context = LocalContext.current
     val auth = FirebaseAuth.getInstance()
     val db = FirebaseFirestore.getInstance()
+    val userViewModel: UserViewModel = hiltViewModel()
 
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
@@ -120,6 +124,16 @@ fun RegisterScreen(
                             db.collection("users").document(userId)
                                 .set(userData)
                                 .addOnSuccessListener {
+                                    val localUser = LocalUser(
+                                        userId = userId,
+                                        firstName = firstName,
+                                        lastName = lastName,
+                                        email = email,
+                                        password = password
+                                    )
+
+                                    userViewModel.insertUser(localUser)
+
                                     Toast.makeText(
                                         context,
                                         context.getString(R.string.register_success),

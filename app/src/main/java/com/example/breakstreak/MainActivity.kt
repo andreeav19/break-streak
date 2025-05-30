@@ -19,6 +19,7 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        deleteDatabase("local_database") // for resetting room db if needed
         enableEdgeToEdge()
         setContent {
             BreakStreakTheme {

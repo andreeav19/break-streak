@@ -128,8 +128,7 @@ fun RegisterScreen(
                                         userId = userId,
                                         firstName = firstName,
                                         lastName = lastName,
-                                        email = email,
-                                        password = password
+                                        email = email
                                     )
 
                                     userViewModel.insertUser(localUser)

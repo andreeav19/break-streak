@@ -1,4 +1,4 @@
-// viewmodel/UserViewModel.kt
+package com.example.breakstreak.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.breakstreak.data.dao.UserDao

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 
+    alias(libs.plugins.hilt)
     id("com.google.gms.google-services")
     id("org.jetbrains.kotlin.kapt")
 }
@@ -78,5 +79,7 @@ dependencies {
     implementation("androidx.room:room-paging:2.6.1")
 
     // Hilt + Room
+    implementation("com.google.dagger:hilt-android:2.51")
+    kapt("com.google.dagger:hilt-compiler:2.51")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 }

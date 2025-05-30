@@ -1,6 +1,6 @@
 package com.example.breakstreak.ui.register
 
-import UserViewModel
+import com.example.breakstreak.viewmodel.UserViewModel
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

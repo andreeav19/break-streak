@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">BreakStreak</string>
+    <string name="register_title">Create account</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="error_required_fields">All fields are required.</string>
+    <string name="register_success">Successfully created account!</string>
+    <string name="register_firestore_error">Firestore error</string>
+    <string name="register_firebase_error">Firebase error</string>
+    <string name="go_to_login_message">Already have an account? Login</string>
+    <string name="login_title">Login</string>
+    <string name="login_success">Logged in successfully!</string>
+    <string name="go_to_register_message">Don\'t have an account? Register</string>
 </resources>

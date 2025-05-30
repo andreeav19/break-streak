@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "507775452977",
+    "project_id": "breakstreak-bbaf3",
+    "storage_bucket": "breakstreak-bbaf3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:507775452977:android:6ead4e43f8b21a56e09210",
+        "android_client_info": {
+          "package_name": "com.example.breakstreak"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCw3NEx3bPPh6UvtUEqCzIxsSxDLbr6I3s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

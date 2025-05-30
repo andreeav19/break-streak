@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">BreakStreak</string>
+    <string name="register_title">Creează cont</string>
+    <string name="first_name">Prenume</string>
+    <string name="last_name">Nume</string>
+    <string name="email">Email</string>
+    <string name="password">Parolă</string>
+    <string name="error_required_fields">Toate câmpurile sunt obligatorii.</string>
+    <string name="register_success">Cont creat cu succes!</string>
+    <string name="register_firestore_error">Eroare Firestore</string>
+    <string name="register_firebase_error">Eroare Firebase</string>
+    <string name="go_to_login_message">Ai deja un cont? Autentifică-te</string>
+    <string name="login_title">Autentificare</string>
+    <string name="login_success">Te-ai autentificat cu succes!</string>
+    <string name="go_to_register_message">Nu ai cont? Creează unul nou</string>
+</resources>

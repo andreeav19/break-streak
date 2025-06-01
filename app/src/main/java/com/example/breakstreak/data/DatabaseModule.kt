@@ -2,6 +2,7 @@ package com.example.breakstreak.data
 
 import android.content.Context
 import androidx.room.Room
+import com.example.breakstreak.data.dao.HabitDao
 import com.example.breakstreak.data.dao.UserDao
 import dagger.Module
 import dagger.Provides
@@ -27,5 +28,10 @@ object DatabaseModule {
     @Provides
     fun provideUserDao(database: AppDatabase): UserDao {
         return database.userDao()
+    }
+
+    @Provides
+    fun provideHabitDao(database: AppDatabase): HabitDao {
+        return database.habitDao()
     }
 }

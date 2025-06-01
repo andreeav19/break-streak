@@ -1,18 +1,35 @@
 package com.example.breakstreak.ui.home
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.material3.Button
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.breakstreak.navigation.Screen
 
 @Composable
-fun HomeScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+fun HomeScreen(navController: NavController) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Welcome to Home Screen")
+        Text("Welcome to Home Screen")
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Button(onClick = {
+            navController.navigate(Screen.CreateHabit.route)
+        }) {
+            Text("Create New Habit")
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.example.breakstreak.data
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.breakstreak.data.dao.HabitDao
 import com.example.breakstreak.data.dao.UserDao
 import com.example.breakstreak.data.model.Habit
 import com.example.breakstreak.data.model.HabitLog
@@ -21,4 +22,6 @@ import com.example.breakstreak.util.Converter
 @TypeConverters(Converter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun habitDao(): HabitDao
+
 }

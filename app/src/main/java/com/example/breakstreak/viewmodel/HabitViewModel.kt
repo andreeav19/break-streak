@@ -33,9 +33,7 @@ class HabitViewModel @Inject constructor(
                 "maxStreakStartDate" to habit.maxStreakStartDate.time
             )
 
-            firestore.collection("users")
-                .document(userId)
-                .collection("habits")
+            firestore.collection("habits")
                 .document(habit.habitId)
                 .set(habitMap)
                 .addOnSuccessListener {

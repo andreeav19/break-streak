@@ -11,11 +11,10 @@ import com.example.breakstreak.ui.register.RegisterScreen
 import com.google.firebase.auth.FirebaseAuth
 
 sealed class Screen(val route: String) {
-    object Login : Screen("login")
-    object Register : Screen("register")
-    object Home : Screen("home")
-    object CreateHabit : Screen("create_habit")
-
+    data object Login : Screen("login")
+    data object Register : Screen("register")
+    data object Home : Screen("home")
+    data object CreateHabit : Screen("create_habit")
 }
 
 @Composable
@@ -34,7 +33,9 @@ fun NavGraph(navController: NavHostController) {
             )
         }
         composable(Screen.Home.route) {
-            HomeScreen(navController = navController)
+            HomeScreen(
+                onNavigateToCreateHabit = { navController.navigate(Screen.CreateHabit.route) }
+            )
         }
         composable(Screen.CreateHabit.route) {
             HabitCreateScreen(

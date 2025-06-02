@@ -33,12 +33,12 @@ import com.example.breakstreak.data.model.LocalUser
 @Composable
 fun RegisterScreen(
     onRegisterSuccess: () -> Unit = {},
-    onNavigateToLogin: () -> Unit = {}
+    onNavigateToLogin: () -> Unit = {},
+    userViewModel: UserViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val auth = FirebaseAuth.getInstance()
     val db = FirebaseFirestore.getInstance()
-    val userViewModel: UserViewModel = hiltViewModel()
 
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }

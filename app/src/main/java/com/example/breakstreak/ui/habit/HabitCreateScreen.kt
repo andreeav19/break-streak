@@ -34,7 +34,7 @@ import java.util.UUID
 fun HabitCreateScreen(
     userId: String,
     onHabitCreated: () -> Unit,
-    viewModel: HabitViewModel = hiltViewModel()
+    habitViewModel: HabitViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     var habitName by remember { mutableStateOf("") }
@@ -79,7 +79,7 @@ fun HabitCreateScreen(
                     maxStreakStartDate = Date()
                 )
 
-                viewModel.insertHabit(newHabit)
+                habitViewModel.insertHabit(newHabit)
                 Toast.makeText(context, "Habit created!", Toast.LENGTH_SHORT).show()
                 onHabitCreated()
             },

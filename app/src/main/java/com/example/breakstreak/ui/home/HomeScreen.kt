@@ -15,7 +15,7 @@ import androidx.navigation.NavController
 import com.example.breakstreak.navigation.Screen
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(onNavigateToCreateHabit: () -> Unit = {} ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -27,7 +27,7 @@ fun HomeScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(onClick = {
-            navController.navigate(Screen.CreateHabit.route)
+            onNavigateToCreateHabit()
         }) {
             Text("Create New Habit")
         }
